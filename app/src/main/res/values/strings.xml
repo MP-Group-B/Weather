@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_home">주변시설</string>
+    <string name="title_dashboard">대중교통</string>
+    <string name="title_notifications">캘린더</string>
+    <string name="title_weather">날씨정보</string>
+</resources>
