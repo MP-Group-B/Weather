@@ -12,6 +12,9 @@ import java.util.concurrent.Executors;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.Manifest;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +35,9 @@ import java.util.Locale;
 
 
 public class WeatherFragment extends Fragment {
+    String values;
+    String rainq,wind,rain,temperature,sky,windvec;
+    String address="";
     private FragmentWeatherBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,8 +50,38 @@ public class WeatherFragment extends Fragment {
 
         final TextView textView = binding.textWeather;
         weatherView.getText().observe(getViewLifecycleOwner(), textView::setText);
-        final api at = new api();
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
+        final api at = new api(getActivity());
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    try {
+                        values = at.func();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+            });
+        try {
+            at.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(values);
+        String[] weatherarray = values.split(" ");
+        rainq=weatherarray[0];
+        wind=weatherarray[1];
+        rain=weatherarray[2];
+        temperature=weatherarray[3];
+        sky=weatherarray[4];
+        windvec=weatherarray[5];
+        for(int i = 6; i < weatherarray.length; i++) {
+            address = address+weatherarray[i]+(i<(weatherarray.length - 1)?" ":"");
+        }
+
+        /** Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -54,7 +90,7 @@ public class WeatherFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-        });
+        }); **/
         return root;
 
     }

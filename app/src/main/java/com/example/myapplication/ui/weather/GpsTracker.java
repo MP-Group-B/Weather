@@ -48,19 +48,14 @@ public class GpsTracker extends Service implements LocationListener {
                         Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
-                if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED ||
                         hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-
-                    ;
                 } else
                     return null;
 
 
                 if (isNetworkEnabled) {
-
-
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-
                     if (locationManager != null)
                     {
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -71,10 +66,7 @@ public class GpsTracker extends Service implements LocationListener {
                         }
                     }
                 }
-
-
-                if (isGPSEnabled)
-                {
+                if (isGPSEnabled){
                     if (location == null)
                     {
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
@@ -95,7 +87,6 @@ public class GpsTracker extends Service implements LocationListener {
         {
             Log.d("@@@", ""+e.toString());
         }
-
         return location;
     }
 
@@ -103,9 +94,10 @@ public class GpsTracker extends Service implements LocationListener {
     {
         if(location != null)
         {
-            latitude = location.getLatitude();
-        }
 
+            latitude = location.getLatitude();
+
+        }
         return latitude;
     }
 
